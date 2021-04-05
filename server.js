@@ -27,7 +27,7 @@ const server = app.listen(port, listening);
 function listening(){
     console.log("server running");
     console.log(`running on localhost: ${port}`);
-}  
+} 
 //const server = app.listen(port, ()=>{console.log(`running on localhost: ${port}`)})
 
 // Initialize all route with a callback function
@@ -38,11 +38,20 @@ function sendData (req, res){
     res.send(projectData);
 };
 // Post Route
-app.post('/addData', addData);
+app.post('/postData', addData);
 function addData (req, res){
-        projectData.date = req.body.date;
-        projectData.temp = req.body.temp;
-        projectData.content = req.body.content;
-        data.push(req.body)
-    };
-   
+        // projectData.date = req.body.date,
+        // projectData.temp = req.body.temp,
+        // projectData.content = req.body.content,
+        projectData = newEntry;
+
+        newEntry = {
+            Date: req.body.date,
+            ZipCode: req.body.zip,
+            Temperature: req.body.temp,
+            Feeling: req.body.content
+        }
+        projectData.push(newEntry)
+        res.send(projectData)
+        
+    }
