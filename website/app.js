@@ -1,6 +1,7 @@
 // Personal API Key for OpenWeatherMap API
-const baseURL = 'api.openweathermap.org/data/2.5';
-const apiKey = '8a05806ff7d5740b4776d36fb369b102';
+const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
+const apiKey = '&appid=8a05806ff7d5740b4776d36fb369b102';
+
 //Define Global Variables
 const button = document.getElementById('generate');
 const zip = document.getElementById('zip');
@@ -8,68 +9,64 @@ const feeling = document.getElementById('feelings');
 const date = document.getElementById('date');
 const temp = document.getElementById('temp');
 const content = document.getElementById('content');
-//date
+
+//New Date
 let d = new Date();
-const newDate = d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
-
-//Adds Inner Text
-
+let currentDate = d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear();
 
 // Event listener to add function to existing HTML DOM element
-document.getElementById("generate").addEventListener('click', generateData)
+document.getElementById("generate").addEventListener('click', generateData);
+
 /* Function called by event listener */
-async function generateData(e) {
+function generateData(e) {
+    e.preventDefault();
     const newZip = document.getElementById('zip').value;
     const newFeelings = document.getElementById('feelings').value;
-    const newTemp = document.getElementById('temp').value;
-    getWeather(baseURL, newZip, apiKey)
-    console.log(`the date is: ${newDate}`);
+    getWeatherData(baseURL, zip, apiKey)
+    console.log(`the date is: ${currentDate}`);
     console.log(`your zipcode is: ${newZip}`);
     console.log(`you are feeling: ${newFeelings}`);
-    console.log(`your temperature is: ${newTemp}`);
+    console.log(`your temperature is : ${temp}`);
 }
 
 /* Function to GET Web API Data*/
-const getWeather = async (baseURL, temp, apiKey)=>{
-    const res = await fetch(baseURL+temp+apiKey)
-    try{
-        const weatherData = await res.json();
-        console.log(weatherData)
-        return weatherData;
-    } catch(error) {
-        console.log("ERROR1", error)
+ const getWeatherData = async (baseURL, zip, apiKey) => {
+     const res = await fetch('/all')
+         try{
+             const data = await res.json();
+             console.log(getWeatherData)
+             return getWeatherData;
+         } catch (error) {
+             console.log("ERROR2", error);
+         }
     }
-}
 
 
-const getDate = async (baseURL, date, apikey)
-const getZip = async (baseURL, zip, apikey)
-const getTemp = async (baseURL, temp, apikey)
 
-/* Function to POST data */
-const postWeatherData = async ( url = 'api.openweathermap.org/data/2.5', data = {}) =>{
-    console.log(data)
+
+// /* Function to POST data to app */
+const postData = async ( url='', data = {}) => {
     const res = await fetch( url, {
         method: 'POST',
         credentials: "same-origin",
         headers: {
-            'Content-Type': 'application/json',
-        },
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'},
         body: JSON.stringify(data),
     });
 }
 
 /* Function to GET Project Data */
-const getWeatherData = async (baseURL, temp, apiKey) => {
-    const res = await fetch(baseURL+temp+apiKey)
-     try{
-        const res = await fetch(baseURL+`$zipcode`+`$apiKey`);
-        try{
-            const data = await res.json();
-            console.log(data)
-            return data;
-        } catch (error) {
-            console.log("ERROR2", error);
-        }
+const updateUI = async ()=> {
+    const req = await fetch ('/all')
+    try{
+        const sendData = await request.json()
+        console.log(sendData)
+        console.log(temp)
+        date.innerHTML=sendData.date
+        temperature.innerHTML=sendData.temp
+        content.innerHTML=sendData.content
+    } catch (error) {
+        console.log("ERROR3", error);
     }
 }
