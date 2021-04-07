@@ -33,14 +33,13 @@ function generateData(e) {
      const res = await fetch(baseURL + newZip + apiKey)
          try{
              const data = await res.json();
+             updateUI();
              console.log(data)
              return data;
          } catch (error) {
              console.log("ERROR1", error);
-         }
+         } 
     }
-
-
 
 
 // /* Function to POST data to app */
