@@ -23,17 +23,18 @@ function generateData(e) {
     const newZip = document.getElementById('zip').value;
     const newFeelings = document.getElementById('feelings').value;
     getWeatherData(baseURL, newZip, apiKey)
+    .then(() => {
+        updateUI();    
+    })
     console.log(`the date is: ${currentDate}`);
     console.log(`your zipcode is: ${newZip}`);
     console.log(`you are feeling: ${newFeelings}`);
-    updateUI()
 }
 /* Function to GET Web API Data*/
  const getWeatherData = async(baseURL, newZip, apiKey) => {
      const res = await fetch(baseURL + newZip + apiKey)
          try{
              const data = await res.json();
-             updateUI();
              console.log(data)
              return data;
          } catch (error) {
