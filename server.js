@@ -40,12 +40,13 @@ function sendData (req, res){
 // Post Route
 app.post('/postData', addData);
 function addData (req, res){
-        newEntry = {
-            Date: req.body.date,
-            ZipCode: req.body.zip,
-            Temperature: req.body.temp,
-            Feeling: req.body.content
-        };
-        projectData = newEntry;
-       console.log(projectData);
-    }
+    newEntry = {
+        Date: req.body.date,
+        ZipCode: req.body.zip,
+        Temperature: req.body.temp,
+        Feeling: req.body.content
+    };
+    projectData = newEntry;
+   console.log(projectData);
+   res.send(projectData);
+}
