@@ -22,9 +22,12 @@ function generateData(e) {
     e.preventDefault();
     const newZip = document.getElementById('zip').value;
     const newFeelings = document.getElementById('feelings').value;
-    getWeatherData(baseURL, newZip, apiKey)
-    .then(() => {
-        updateUI();    
+   getWeatherData(baseURL, newZip, apiKey)
+    .then(data => {
+        addData("/postData", {Date: 'currentDate', "zip": newZip, "temp": data.main.temp, "content": newFeelings})
+        .then(() => {
+            updateUI();
+        })
     })
     console.log(`the date is: ${currentDate}`);
     console.log(`your zipcode is: ${newZip}`);
@@ -60,11 +63,10 @@ const addData = async ( url='', data = {}) => {
 const updateUI = async ()=> {
     const req = await fetch ('/all');
     try{
-        const projectData = await request.json()
-        document.getElementById('date').innerHTML=projectData[0].currentDate;
-        document.getElementById('zip').innerHTML=projectData[0].zip;
-        document.getElementById('temp').innerHTML=projectData[0].temp;
-        document.getElementById('content').innerHTML=projectData[0].content;
+        const projectData = await req.json()
+        document.getElementById('date').innerHTML=`Date - ${projectData.Temperature}`;
+        document.getElementById('temp').innerHTML=`Temp - ${projectData.Temperature}`;
+        document.getElementById('content').innerHTML=`Feeling - ${projectData.Feelings}`;
     } catch (error) {
         console.log("ERROR2", error);
     }
