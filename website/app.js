@@ -24,7 +24,12 @@ function generateData(e) {
     const newFeelings = document.getElementById('feelings').value;
    getWeatherData(baseURL, newZip, apiKey)
     .then(data => {
-        addData("/postData", {Date: 'currentDate', "zip": newZip, "temp": data.main.temp, "content": newFeelings})
+        addData("/postData", 
+        {"date": currentDate, 
+        "zip": newZip,
+        "temp": data.main.temp,
+        "content": newFeelings
+    })
         .then(() => {
             updateUI();
         })
@@ -64,9 +69,9 @@ const updateUI = async ()=> {
     const req = await fetch ('/all');
     try{
         const projectData = await req.json()
-        document.getElementById('date').innerHTML=`Date - ${projectData.Temperature}`;
+        document.getElementById('date').innerHTML=`Date - ${projectData.Date}`;
         document.getElementById('temp').innerHTML=`Temp - ${projectData.Temperature}`;
-        document.getElementById('content').innerHTML=`Feeling - ${projectData.Feelings}`;
+        document.getElementById('content').innerHTML=`Feeling - ${projectData.Feeling}`;
     } catch (error) {
         console.log("ERROR2", error);
     }
