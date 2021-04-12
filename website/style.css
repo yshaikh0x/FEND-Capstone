@@ -5,13 +5,13 @@ body{
 
 #app{
     display: grid;
-    /* grid-auto-rows: minmax(150px, auto);
-    grid-template-columns: minmax(150px, auto); */
-    height: 100%;
+    grid-auto-rows: minmax(50px, auto); 
+   grid-template-columns: minmax(150px, auto);
+    height: 100vh;
     background: #c3bbbd;
     color: #080a6d;
     justify-content: center;
-    grid-gap: 1em;
+    grid-gap: 20px;
     font-size: 20px;
     font-family: 'Oswald', sans-serif;
 }
@@ -25,7 +25,7 @@ body{
 }
 
 #entryHolder{
-
+    
 }
 
 #date{
@@ -65,8 +65,8 @@ input{
 }
 
 button{
-    width: 400px;
-    height: 100px;
+    width: 300px;
+    height: 90px;
     background: #3b4a6b;
     color: #f0d43a;
     font-size: 26px;
@@ -94,6 +94,8 @@ textarea{
     color: #f0d43a;
     font-size: 20px;
     font-family: 'Oswald', sans-serif;
+    height: 200px;
+    width: 420px;
 }
 /* Reset style for HTML element on active to have no border*/
 input:focus,
