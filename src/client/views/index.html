@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Travel Planning App</title>
+<link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
+</head>
+ <body>
+<div id = "app">
+  <div class ="headline">
+    Plan Your Next Trip!
+  </div>
+  <div class ="holderDest">
+    <label for="destination">Enter Destination</label>
+    <input type="text" id="destinationCity" placeholder="Enter Destination">
+  </div>
+  <div class ="holderDep">
+    <label for="departure">Departure On</label>
+    <input type="date" id="departureDate" placeholder="">
+    <button id="generate" type = "submit" onclick="return " onsubmit="return "> Generate Flight Information </button>
+  </div>
+  <div class ="dataContent">
+    <div class = "title"></div>
+    <div id = "temp"></div> 
+   <div id = "weather"></div>
+   <div id = "countdown"> </div>
+  </div>
+  </div>
+  </div>
+<script src="'./src/client/index.js" type="text/javascript"></script>
+
+</body>
+</html>

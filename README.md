@@ -1,4 +1,4 @@
-# Weather Journal App
+# Travel App 
 
 ## Table of Contents
 
@@ -6,8 +6,8 @@
 * [Author](#author)
 
 ## Description
-This is a Weather App that pulls data from the clients side and generates information using Web API. This was coded in Javascript. The starter code given by Udacity consists of the index.html and style.css.  
+This is a Travel App project built as a Capstone for the Udacity Front End Developer program. It features a weather prediction api that is used to check the forecast of the country that will be travelled to. It also includes a countdown timer to the upcoming departure date.
 
 ## Author
 
-This project was written by Yusrah Shaikh with the starter code given by Udacity.
+This project was written by Yusrah Shaikh 
