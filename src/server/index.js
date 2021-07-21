@@ -69,15 +69,16 @@ function addData (req, res){
    res.send(projectData);
 }
 
-// //Geonames Post Route
-// app.post('/postGeoInfo', addGeo);
-// function addGeo (req, res){
-//     newEntry = {
-//         City: req.body.city,
-//         Latitude: req.body.latitude,
-//         Longitude: req.body.longitude,
-//         Country: req.body.country
-//     };
-//     projectData = newEntry;
-//    console.log(projectData);
-//    res.send(projectData);
+//Geonames Post Route
+app.post('/postGeoInfo', addGeo);
+function addGeo (req, res){
+    newEntry = {
+        City: req.body.city,
+        Latitude: req.body.latitude,
+        Longitude: req.body.longitude,
+        Country: req.body.country
+    };
+    projectData = newEntry;
+   console.log(projectData);
+   res.send(projectData);
+}
