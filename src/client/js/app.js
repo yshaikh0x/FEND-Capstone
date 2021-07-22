@@ -54,11 +54,13 @@ async function generateData(e) {
 }
 ///***COUNTDOWN FUNCTION****////
 async function getCountdown (departure){
-  let v  = new Date().departureVal;
-  console.log (v);
+//Set the date we're counting down to
+const depDate = new Date().getDate().departureVal;
+  //get todays date
   let d = new Date();
+  //calculate difference between 2 dates
   let todaysDate = d.getFullYear() + '-' +  '0' + ( d.getMonth() + 1) + '-' + d.getDate();
-  const distance = departureVal - todaysDate
+  const distance = depDate - todaysDate
   console.log(todaysDate)
   // console.log(depDate)
   console.log(distance)
