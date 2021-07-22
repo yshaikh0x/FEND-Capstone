@@ -16,45 +16,8 @@ const pixabayBase = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=`
 const button = document.getElementById('generate');
 const date = document.getElementById('date');
 const departure = document.getElementById('departureDate');
-const departureVal = document.getElementById('departureDate').value
-
-/////**COUNTDOWN TIMER****\\\\\\\\\
-// Set the date we're counting down to
-const countDownDate = new Date().getDate().departureVal;
-
-console.log (countDownDate)
-
-
-// Update the count down every 1 second
-const getCountDown = setInterval(function() {
-
-  // Get today's date and time
-  const d = new Date()
-  const now = d.getFullYear() + '-' +  '0' + ( d.getMonth() + 1) + '-' + d.getDate();
+const departureVal = document.getElementById('departureDate').value;
   
-  console.log(now)
-
-  // Find the distance between now and the count down date
-  const distance = countDownDate - now;
-  console.log(distance)
-  // Time calculations for days, hours, minutes and seconds
-  let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
-  // Output the result in an element with id="demo"
-  document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
-  + minutes + "m " + seconds + "s ";
-    
-  // If the count down is over, write some text 
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("countdown").innerHTML = "EXPIRED";
-  }
-}, 1000);
-
-   
    
 // Event listener to add function to existing HTML DOM element
 document.getElementById("generate").addEventListener('click', generateData);
@@ -64,56 +27,79 @@ async function generateData(e) {
     e.preventDefault();
     const destinationCity = document.getElementById('destinationCity').value
     const departureVal = document.getElementById('departureDate').value;
+    const countdown = getCountdown();
     console.log(destinationCity)
     console.log (departureVal)
-    /////**COUNTDOWN TIMER****\\\\\\\\\
-// Set the date we're counting down to
-const countDownDate = new Date().getDate().departureVal;
 
-console.log (departure)
+    // getWeatherData(baseURL, newZip, apiKey)
+    // .then(data => {
+    //     addData("/postData", 
+    //     {"destination_city": destinationCity, 
+    //     "departure_day": departureVal,
+    //     "weather": data.main.weather,
+    //     // "countdown": countdown\
+    // })
+    //     .then(() => {
+    //         updateUI();
+    //     })
+    // })
+    // console.log(`Destination City is: ${destinationCity}`);
+    // console.log(`You are Departing: ${departureVal}`);
+    // console.log(`Countdown is : ${}`);
 
-
-// Update the count down every 1 second
-const getCountDown = setInterval(function() {
- // Get today's date and time
-  const d = new Date()
-  const now = d.getFullYear() + '-' +  '0' + ( d.getMonth() + 1) + '-' + d.getDate();
-  
-  console.log(now)
-
-  // Find the distance between now and the count down date
-  const distance = countDownDate - now;
+     if (countdown <= 7)  
+    { weatherbitBase, weatherbitCurrent
+} else {
+  weatherbitBase, weatherbitFuture
+}
+///***COUNTDOWN FUNCTION****////
+async function getCountdown (departure){
+  let v  = new Date().departureVal;
+  console.log (v);
+  let d = new Date();
+  let todaysDate = d.getFullYear() + '-' +  '0' + ( d.getMonth() + 1) + '-' + d.getDate();
+  const distance = departureVal - todaysDate
+  console.log(todaysDate)
+  // console.log(depDate)
   console.log(distance)
-  // Time calculations for days, hours, minutes and seconds
   let days = Math.floor(distance / (1000 * 60 * 60 * 24));
   let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
-  // Output the result in an element with id="demo"
-  document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
-  + minutes + "m " + seconds + "s ";
-    
-  // If the count down is over, write some text 
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("countdown").innerHTML = "EXPIRED";
-  }
-}, 1000);
-
-
-    const countdown = getCountDown()  
-     if (countdown <= 7)  
-    { weatherbitBase = weatherbitCurrent
-} else {
-  weatherbitBase = weatherbitFuture
 }
 
+/* Function to GET Geonames API Data*/
+const getGeonames = async(baseURL, geonamesApi, city) => {
+  const res = await fetch(baseURL + 'username=' + geonamesApi + '&q=' + city)
+      try{
+          const data = await res.json();
+          console.log(data)
+          return data;
+      } catch (error) {
+          console.log("GEO ERROR", error);
+      } 
+ }
 
+/* Function to GET Weatherbit API Data*/
+const getWeatherbit = async(weatherbitBase, weatherbitApi, lat, lng) => {
+  const res = await fetch(
+    weatherbitBase + 'lat=' +
+    lat +
+    '&lon=' +
+    lng +
+    '&key=' + weatherbitApi)
+      try{
+          const data = await res.json();
+          console.log(data)
+          return data;
+      } catch (error) {
+          console.log("WEATHERBIT ERROR", error);
+      } 
+ }
 
 
 /* Function to POST data to app */
-const addData = async ( url='http://localhost:8080', data = {}) => {
+const postData = async ( url='http://localhost:8080', data = {}) => {
     const res = await fetch( url, {
         method: 'POST',
         credentials: "same-origin",
@@ -131,4 +117,15 @@ try {
   }
 }}
 
- 
+ /* Function to GET Data */
+const updateUI = async ()=> {
+  const req = await fetch ('/all');
+  try{
+      const projectData = await req.json()
+      document.getElementById('country').innerHTML=`Date - ${projectData.Country}`;
+      document.getElementById('weather').innerHTML=`Temperature - ${projectData.Weather}`;
+      document.getElementById('countdown').innerHTML=`Countdown- ${projectData.Countdown}`;
+  } catch (error) {
+      console.log("Update_UI", error);
+  }
+}
