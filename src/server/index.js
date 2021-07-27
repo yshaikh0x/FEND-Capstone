@@ -69,16 +69,19 @@ function addData (req, res){
    res.send(projectData);
 }
 
-//Geonames Post Route
-app.post('/postGeoInfo', addGeo);
-function addGeo (req, res){
-    newEntry = {
-        City: req.body.city,
-        Latitude: req.body.latitude,
-        Longitude: req.body.longitude,
-        Country: req.body.country
+
+//POST route
+app.post('/postGeo', async (req, res) => {
+    const {destinationCity, geonamesApi} = req.body;
+    console.log(req.body);
+    projectData = req.body;
+    let geonamesURL = await fetch 
+    (`http://api.geonames.org/searchJSON?q=${destinationCity}&maxRows=1&username=${geonamesApi}`);
+        res.send({
+         destinationCity,
+            lng,
+            lat
+      });
+    } catch (error) {
+      console.log('Geo_Post_Error', error);
     };
-    projectData = newEntry;
-   console.log(projectData);
-   res.send(projectData);
-}

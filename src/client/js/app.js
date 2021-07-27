@@ -11,6 +11,7 @@ const weatherbitFuture = 'http://api.weatherbit.io/v2.0/forecast/daily?'
 
 //Pixabay API 
 const pixabayBase = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=`;
+const pixabayApi = '22391342-c4af7b5f68dd6481aa4bc801e'
 
 //Define Global Variables
 const button = document.getElementById('generate');
@@ -53,7 +54,7 @@ async function generateData(e) {
   weatherbitBase, weatherbitFuture
 }
 ///***COUNTDOWN FUNCTION****////
-async function getCountdown (departure){
+async function getCountdown (departureVal){
 //Set the date we're counting down to
 const depDate = new Date().getDate().departureVal;
   //get todays date
@@ -99,12 +100,24 @@ const getWeatherbit = async(weatherbitBase, weatherbitApi, lat, lng) => {
       } 
  }
 
+ /* Function to GET Pixabay API Data*/
+const getPixabay = async(pixabayBase, pixabayApi, city) => {
+  const res = await fetch(pixabayBase + 'username=' + geonamesApi + '&q=' + city)
+      try{
+          const data = await res.json();
+          console.log(data)
+          return data;
+      } catch (error) {
+          console.log("GEO ERROR", error);
+      } 
+ }
 
 /* Function to POST data to app */
-const postData = async ( url='http://localhost:8080', data = {}) => {
+const postData = async ( url=`http://localhost:8080/cities/`, data = {}) => {
     const res = await fetch( url, {
         method: 'POST',
         credentials: "same-origin",
+        mode: 'cors',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -115,7 +128,7 @@ try {
     console.log(newData)
     return newData
   } catch (error) {
-    console.log('post_error', error)
+    console.log('POST Error', error)
   }
 }}
 
@@ -124,10 +137,11 @@ const updateUI = async ()=> {
   const req = await fetch ('/all');
   try{
       const projectData = await req.json()
-      document.getElementById('country').innerHTML=`Date - ${projectData.Country}`;
-      document.getElementById('weather').innerHTML=`Temperature - ${projectData.Weather}`;
-      document.getElementById('countdown').innerHTML=`Countdown- ${projectData.Countdown}`;
-  } catch (error) {
-      console.log("Update_UI", error);
+      document.getElementById('country').innerHTML=`Country: ${data.geonames[0].countryName}`;
+      document.getElementById('longitude').innerHTML=`Longitude: ${data.geonames[0].lng}`;
+      document.getElementById('latitude').innerHTML=`Latitude: ${data.geonames[0].lat}`;
+      
+  }catch(error) {
+      console.log("UI Error" , error)
   }
 }
