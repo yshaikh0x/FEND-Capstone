@@ -56,14 +56,13 @@ async function generateData(e) {
 ///***COUNTDOWN FUNCTION****////
 async function getCountdown (departureVal){
 //Set the date we're counting down to
-const depDate = new Date().getDate().departureVal;
+const depDate = new Date(departureVal);
   //get todays date
   let d = new Date();
+  let todaysDate = new Date();
+  todaysDate = new Date(todaysDate);
   //calculate difference between 2 dates
-  let todaysDate = d.getFullYear() + '-' +  '0' + ( d.getMonth() + 1) + '-' + d.getDate();
   const distance = depDate - todaysDate
-  console.log(todaysDate)
-  // console.log(depDate)
   console.log(distance)
   let days = Math.floor(distance / (1000 * 60 * 60 * 24));
   let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -113,7 +112,7 @@ const getPixabay = async(pixabayBase, pixabayApi, city) => {
  }
 
 /* Function to POST data to app */
-const postData = async ( url=`http://localhost:8080/cities/`, data = {}) => {
+const postData = async ( url=`http://localhost:8080/getGeonames`, data = {}) => {
     const res = await fetch( url, {
         method: 'POST',
         credentials: "same-origin",
