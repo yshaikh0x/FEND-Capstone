@@ -28,7 +28,7 @@ async function generateData(e) {
     e.preventDefault();
     const destinationCity = document.getElementById('destinationCity').value
     const departureVal = document.getElementById('departureDate').value;
-    const countdown = getCountdown();
+    const countdown = getCountdown(departureVal);
     console.log(destinationCity)
     console.log (departureVal)
 
@@ -63,11 +63,12 @@ const depDate = new Date(departureVal);
   todaysDate = new Date(todaysDate);
   //calculate difference between 2 dates
   const distance = depDate - todaysDate
-  console.log(distance)
-  let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  let days = Math.ceil(distance / (1000 * 60 * 60 * 24));
+  let hours = Math.ceil((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  let minutes = Math.ceil((distance % (1000 * 60 * 60)) / (1000 * 60));
+  let seconds = Math.ceil((distance % (1000 * 60)) / 1000);
+  //writing out the countdown
+  console.log("You are leaving in " + days + " days")
 }
 
 /* Function to GET Geonames API Data*/
@@ -100,14 +101,14 @@ const getWeatherbit = async(weatherbitBase, weatherbitApi, lat, lng) => {
  }
 
  /* Function to GET Pixabay API Data*/
-const getPixabay = async(pixabayBase, pixabayApi, city) => {
-  const res = await fetch(pixabayBase + 'username=' + geonamesApi + '&q=' + city)
+const getPixabay = async(pixabayBase, pixabayApi) => {
+  const res = await fetch(pixabayBase + pixabayApi )
       try{
           const data = await res.json();
           console.log(data)
           return data;
       } catch (error) {
-          console.log("GEO ERROR", error);
+          console.log("PIXA ERROR", error);
       } 
  }
 
@@ -138,7 +139,8 @@ const updateUI = async ()=> {
       const projectData = await req.json()
       document.getElementById('country').innerHTML=`Country: ${data.geonames[0].countryName}`;
       document.getElementById('longitude').innerHTML=`Longitude: ${data.geonames[0].lng}`;
-      document.getElementById('latitude').innerHTML=`Latitude: ${data.geonames[0].lat}`;
+      document.getElementById('latitude').innerHTML=`Latitude: ${data.geonames[0].lat}`
+
       
   }catch(error) {
       console.log("UI Error" , error)
