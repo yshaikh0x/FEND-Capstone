@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 
 /****API ACCESS****/
-const apiKey = process.env.API_KEY;
+
 
 // Geonames API
 const geonamesBase = 'http://api.geonames.org/searchJSON?q=';
@@ -51,37 +51,44 @@ const projectData = {};
 
 
 app.get('/all', sendData)
+
 // Callback function to complete GET '/all'
 function sendData (req, res){
     console.log(projectData);
     res.send(projectData);
 };
 
-// Post Route
-app.post('/postData', addData);
-function addData (req, res){
-    newData = {
-        City: req.body.Destination,
-        Departure: req.body.Departure
+//POST Geonames Route
+let geonamesURL = await fetch 
+(`http://api.geonames.org/searchJSON?q=${destinationCity}&maxRows=1&username=${geonamesApi}`);
+app.post('/postGeo', (req, res) => {
+    geoData = {
+        City: req.body.city,
+        Latitude: req.body.latitude,
+        Longitude: req.body.longitude
     };
-    projectData = newData;
-   console.log(projectData);
+    projectData.push(geoData);
+   console.log(geoData);
    res.send(projectData);
-}
+});
 
 
-//POST route
-app.post('/postGeo', async (req, res) => {
-    const {destinationCity, geonamesApi} = req.body;
-    console.log(req.body);
-    projectData = req.body;
-    let geonamesURL = await fetch 
-    (`http://api.geonames.org/searchJSON?q=${destinationCity}&maxRows=1&username=${geonamesApi}`);
-        res.send({
-         destinationCity,
-            lng,
-            lat
-      });
-    } catch (error) {
-      console.log('Geo_Post_Error', error);
+//POST Weatherbit Route
+app.post('/postWeatherbit', (req, res) => {
+    weatherbitData = {
+      Temperature: req.body.temp,
+      Description: req.body.description
     };
+    projectData.push(weatherbitData);
+    console.log(weatherbitData)
+    res.send(projectData);
+  });
+
+  //POST Pixabay Route
+app.post('/postPixabay', (req, res) => {
+    pixabayImage = {
+      Image: req.body.image,
+    };
+    projectData.push(pixabayImage);
+    res.send(projectData);
+  });
