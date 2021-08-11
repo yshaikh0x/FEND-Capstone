@@ -1,23 +1,29 @@
 
 // Geonames API
+const geonamesApi = process.env.GEONAMES_USERNAME
 const geonamesBase = 'http://api.geonames.org/searchJSON?q=';
-const geonamesApi = 'yshaikh'
+
 
 //Weatherbit API
-const weatherbitApi = 'd50c5f4915224a418089dd6bd26bf43b'
+const weatherbitApi = process.env.WEATHERBIT_API_KEY
 const weatherbitBase = 'http://api.weatherbit.io/v2.0/'
-const weatherbitCurrent = 'http://api.weatherbit.io/v2.0/current?'
-const weatherbitFuture = 'http://api.weatherbit.io/v2.0/forecast/daily?'
+const weatherbitCurrent = 'current?'
+const weatherbitFuture = 'forecast/daily?'
 
 //Pixabay API 
+const pixabayApi = process.env.PIXABAY_KEY
 const pixabayBase = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=`;
-const pixabayApi = '22391342-c4af7b5f68dd6481aa4bc801e'
+
 
 //Define Global Variables
 const button = document.getElementById('generate');
 const date = document.getElementById('date');
+const destinationCity = document.getElementById('destinationCity').value
 const departure = document.getElementById('departureDate');
 const departureVal = document.getElementById('departureDate').value;
+const city = destinationCity
+const temperature = document.getElementById('temp');
+const description = document.getElementById('description');
   
    
 // Event listener to add function to existing HTML DOM element
@@ -32,27 +38,31 @@ async function generateData(e) {
     console.log(destinationCity)
     console.log (departureVal)
 
-    // getWeatherData(baseURL, newZip, apiKey)
-    // .then(data => {
-    //     addData("/postData", 
-    //     {"destination_city": destinationCity, 
-    //     "departure_day": departureVal,
-    //     "weather": data.main.weather,
-    //     // "countdown": countdown\
-    // })
-    //     .then(() => {
-    //         updateUI();
-    //     })
-    // })
-    // console.log(`Destination City is: ${destinationCity}`);
-    // console.log(`You are Departing: ${departureVal}`);
-    // console.log(`Countdown is : ${}`);
-
+    getGeonames(destinationCity)
+    .then(async (data) => {
+         const res = await 
+        addData("/postData", 
+        {"longitude": data.main.lng, 
+        "latitude": data.main.lat ,
+        "city": destinationCity,
+    })
+    getWeatherbit(lat,lng)
+      .then((weatherInfo) => {
+        addData("/postData", {
+            "temperature": data.main.temp,
+            "description" : data.main.description
+        })
+      })
+        .then(() => {
+            updateUI();
+        })
+    })
      if (countdown <= 7)  
-    { weatherbitBase, weatherbitCurrent
+    { weatherbitBase + weatherbitCurrent
 } else {
-  weatherbitBase, weatherbitFuture
+  weatherbitBase + weatherbitFuture
 }
+
 ///***COUNTDOWN FUNCTION****////
 async function getCountdown (departureVal){
 //Set the date we're counting down to
@@ -68,7 +78,7 @@ const depDate = new Date(departureVal);
   let minutes = Math.ceil((distance % (1000 * 60 * 60)) / (1000 * 60));
   let seconds = Math.ceil((distance % (1000 * 60)) / 1000);
   //writing out the countdown
-  console.log("You are leaving in " + days + " days")
+  console.log("You are leaving in " + days + " days! ")
 }
 
 /* Function to GET Geonames API Data*/
@@ -84,7 +94,7 @@ const getGeonames = async(baseURL, geonamesApi, city) => {
  }
 
 /* Function to GET Weatherbit API Data*/
-const getWeatherbit = async(weatherbitBase, weatherbitApi, lat, lng) => {
+const getWeatherbit = async (lat, lng) => {
   const res = await fetch(
     weatherbitBase + 'lat=' +
     lat +
@@ -113,7 +123,7 @@ const getPixabay = async(pixabayBase, pixabayApi) => {
  }
 
 /* Function to POST data to app */
-const postData = async ( url=`http://localhost:8080/getGeonames`, data = {}) => {
+const postData = async ( url='', data = {}) => {
     const res = await fetch( url, {
         method: 'POST',
         credentials: "same-origin",
@@ -137,9 +147,11 @@ const updateUI = async ()=> {
   const req = await fetch ('/all');
   try{
       const projectData = await req.json()
-      document.getElementById('country').innerHTML=`Country: ${data.geonames[0].countryName}`;
-      document.getElementById('longitude').innerHTML=`Longitude: ${data.geonames[0].lng}`;
-      document.getElementById('latitude').innerHTML=`Latitude: ${data.geonames[0].lat}`
+      console.log(projectData);
+      document.getElementById('city').innerHTML=`City: ${data.projectData[0].destinationCity}`;
+      document.getElementById('temp').innerHTML=`Temperature: ${data.projectData[0].temperature}`;
+      document.getElementById('description').innerHTML=`Description: ${data.projectData[0].description}`;
+      document.getElementById('countdown').innerHTML="Countdown:"
 
       
   }catch(error) {
