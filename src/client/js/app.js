@@ -1,70 +1,58 @@
-
-// Geonames API
-const geonamesApi = process.env.GEONAMES_USERNAME
-const geonamesBase = 'http://api.geonames.org/searchJSON?q=';
-
-
-//Weatherbit API
-const weatherbitApi = process.env.WEATHERBIT_API_KEY
-const weatherbitBase = 'http://api.weatherbit.io/v2.0/'
-const weatherbitCurrent = 'current?'
-const weatherbitFuture = 'forecast/daily?'
-
-//Pixabay API 
-const pixabayApi = process.env.PIXABAY_KEY
-const pixabayBase = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=`;
-
-
 //Define Global Variables
 const button = document.getElementById('generate');
 const date = document.getElementById('date');
 const destinationCity = document.getElementById('destinationCity').value
 const departure = document.getElementById('departureDate');
 const departureVal = document.getElementById('departureDate').value;
-const city = destinationCity
 const temperature = document.getElementById('temp');
 const description = document.getElementById('description');
   
-   
+// Geonames API
+const geonamesApi = "yshaikh";
+const geonamesBase = `http://api.geonames.org/searchJSON?q=${destinationCity}&maxRows=1&username=${geonamesApi}`;
+
+//Weatherbit API
+const weatherbitApi = 'd50c5f4915224a418089dd6bd26bf43b'
+const weatherbitBase = `https://api.weatherbit.io/v2.0/current?`
+
+//Pixabay API 
+const pixabayApi = process.env.PIXABAY_KEY
+const pixabayBase = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${destinationCity}`;
+
+
+  
 // Event listener to add function to existing HTML DOM element
 document.getElementById("generate").addEventListener('click', generateData);
 
 /* Function called by event listener */
 async function generateData(e) {
     e.preventDefault();
-    const destinationCity = document.getElementById('destinationCity').value
-    const departureVal = document.getElementById('departureDate').value;
     const countdown = getCountdown(departureVal);
     console.log(destinationCity)
     console.log (departureVal)
 
     getGeonames(destinationCity)
-    .then(async (data) => {
+    .then(async (geoData) => {
          const res = await 
-        addData("/postData", 
-        {"longitude": data.main.lng, 
-        "latitude": data.main.lat ,
+        postData("/postData", 
+        {"longitude": geoData.lng, 
+        "latitude": geoData.lat ,
         "city": destinationCity,
     })
-    getWeatherbit(lat,lng)
+    getWeatherbit()
       .then((weatherInfo) => {
-        addData("/postData", {
-            "temperature": data.main.temp,
-            "description" : data.main.description
+        postData("/postData", {
+            "temperature": weatherInfo.temp,
+            "description" : weatherInfo.description
         })
       })
         .then(() => {
             updateUI();
         })
     })
-     if (countdown <= 7)  
-    { weatherbitBase + weatherbitCurrent
-} else {
-  weatherbitBase + weatherbitFuture
 }
-
 ///***COUNTDOWN FUNCTION****////
-async function getCountdown (departureVal){
+const getCountdown = async(departureVal) => {
 //Set the date we're counting down to
 const depDate = new Date(departureVal);
   //get todays date
@@ -82,29 +70,38 @@ const depDate = new Date(departureVal);
 }
 
 /* Function to GET Geonames API Data*/
-const getGeonames = async(baseURL, geonamesApi, city) => {
-  const res = await fetch(baseURL + 'username=' + geonamesApi + '&q=' + city)
+const getGeonames = async(destinationCity) => {
+  const res = await fetch(`http://api.geonames.org/searchJSON?q=${destinationCity}&maxRows=1&username=${geonamesApi}`)
       try{
-          const data = await res.json();
-          console.log(data)
-          return data;
+          const geoData = await res.json();
+          console.log(geoData)
+          console.log("Longitude: " + geoData.geonames[0].lng)
+          console.log("Latitude: "+ geoData.geonames[0].lat)
+          let lat = geoData.geonames[0].lat
+          let lng = geoData.geonames[0].lng
+          getWeatherbit(lat,lng)
+          return {
+            lat,
+            lng
+          };
       } catch (error) {
           console.log("GEO ERROR", error);
       } 
  }
-
 /* Function to GET Weatherbit API Data*/
-const getWeatherbit = async (lat, lng) => {
+
+const getWeatherbit= async (lat, lng) => {
   const res = await fetch(
-    weatherbitBase + 'lat=' +
-    lat +
-    '&lon=' +
-    lng +
-    '&key=' + weatherbitApi)
+    `https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lng}&key=${weatherbitApi}`)
       try{
-          const data = await res.json();
-          console.log(data)
-          return data;
+          const weatherInfo = await res.json();
+          console.log(weatherInfo)
+          console.log("Temp: " + weatherInfo.temp)
+          console.log("Description: " + weatherInfo.description)
+          return {
+            temp, 
+            description
+          };
       } catch (error) {
           console.log("WEATHERBIT ERROR", error);
       } 
@@ -112,7 +109,7 @@ const getWeatherbit = async (lat, lng) => {
 
  /* Function to GET Pixabay API Data*/
 const getPixabay = async(pixabayBase, pixabayApi) => {
-  const res = await fetch(pixabayBase + pixabayApi )
+  const res = await fetch(`https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${destinationCity}`)
       try{
           const data = await res.json();
           console.log(data)
@@ -140,7 +137,7 @@ try {
   } catch (error) {
     console.log('POST Error', error)
   }
-}}
+}
 
  /* Function to GET Data */
 const updateUI = async ()=> {
@@ -151,7 +148,7 @@ const updateUI = async ()=> {
       document.getElementById('city').innerHTML=`City: ${data.projectData[0].destinationCity}`;
       document.getElementById('temp').innerHTML=`Temperature: ${data.projectData[0].temperature}`;
       document.getElementById('description').innerHTML=`Description: ${data.projectData[0].description}`;
-      document.getElementById('countdown').innerHTML="Countdown:"
+      document.getElementById('countdown').innerHTML=`"Countdown:" ${getCountdown.days}`;
 
       
   }catch(error) {
