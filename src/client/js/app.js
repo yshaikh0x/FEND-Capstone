@@ -79,7 +79,6 @@ const getGeonames = async(destinationCity) => {
           console.log("Latitude: "+ geoData.geonames[0].lat)
           let lat = geoData.geonames[0].lat
           let lng = geoData.geonames[0].lng
-          getWeatherbit(lat,lng)
           return {
             lat,
             lng
@@ -90,14 +89,14 @@ const getGeonames = async(destinationCity) => {
  }
 /* Function to GET Weatherbit API Data*/
 
-const getWeatherbit= async (lat, lng) => {
+const getWeatherbit= async (lat,lng) => {
   const res = await fetch(
     `https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lng}&key=${weatherbitApi}`)
       try{
           const weatherInfo = await res.json();
           console.log(weatherInfo)
-          console.log("Temp: " + weatherInfo.temp)
-          console.log("Description: " + weatherInfo.description)
+          console.log("Temp: " + weatherInfo.weatherbit[0].temp)
+          console.log("Description: " + weatherInfo.weatherbit[0].description)
           return {
             temp, 
             description
@@ -108,7 +107,7 @@ const getWeatherbit= async (lat, lng) => {
  }
 
  /* Function to GET Pixabay API Data*/
-const getPixabay = async(pixabayBase, pixabayApi) => {
+const getPixabay = async(destinationCity) => {
   const res = await fetch(`https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${destinationCity}`)
       try{
           const data = await res.json();
@@ -145,7 +144,7 @@ const updateUI = async ()=> {
   try{
       const projectData = await req.json()
       console.log(projectData);
-      document.getElementById('city').innerHTML=`City: ${data.projectData[0].destinationCity}`;
+      document.getElementById('city').innerHTML=`City: ${projectData.geoData.City}`;
       document.getElementById('temp').innerHTML=`Temperature: ${data.projectData[0].temperature}`;
       document.getElementById('description').innerHTML=`Description: ${data.projectData[0].description}`;
       document.getElementById('countdown').innerHTML=`"Countdown:" ${getCountdown.days}`;

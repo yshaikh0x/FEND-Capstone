@@ -21,15 +21,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 
 /****API ACCESS****/
-
-
 // Geonames API
+const geonamesApi = process.env.GEONAMES_USERNAME
 const geonamesBase = 'http://api.geonames.org/searchJSON?q=';
 
+const lat = data.geonames[0].lat;
+const lng = data.geonames[0].lng;
+
 //Weatherbit API
-const weatherbitBase = 'https://api.weatherbit.io/v2.0/forecast/daily?';
+const weatherbitApi = process.env.WEATHERBIT_API_KEY
+const weatherbitBase = 'http://api.weatherbit.io/v2.0/'
+const weatherbitCurrent = 'current?'
+const weatherbitFuture = 'forecast/daily?'
 
 //Pixabay API 
+const pixabayApi = process.env.PIXABAY_KEY
 const pixabayBase = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=`;
 
 
@@ -38,7 +44,7 @@ app.use(express.static('dist'));
 console.log(__dirname)
 
 //Port app will listen to
-const port = 8000;
+const port = 8080;
 const server = app.listen(port, listening);
 function listening() {
     console.log("server running");
@@ -47,7 +53,7 @@ function listening() {
 
 
 // Storing data in object
-const projectData = {};
+let projectData = {};
 
 
 app.get('/all', sendData)
@@ -59,13 +65,11 @@ function sendData (req, res){
 };
 
 //POST Geonames Route
-let geonamesURL = await fetch 
-(`http://api.geonames.org/searchJSON?q=${destinationCity}&maxRows=1&username=${geonamesApi}`);
-app.post('/postGeo', (req, res) => {
+app.post('/postData', (req, res) => {
     geoData = {
         City: req.body.city,
-        Latitude: req.body.latitude,
-        Longitude: req.body.longitude
+        Latitude: req.body.lat,
+        Longitude: req.body.lng
     };
     projectData.push(geoData);
    console.log(geoData);
@@ -74,7 +78,7 @@ app.post('/postGeo', (req, res) => {
 
 
 //POST Weatherbit Route
-app.post('/postWeatherbit', (req, res) => {
+app.post('/postData', (req, res) => {
     weatherbitData = {
       Temperature: req.body.temp,
       Description: req.body.description
@@ -85,7 +89,7 @@ app.post('/postWeatherbit', (req, res) => {
   });
 
   //POST Pixabay Route
-app.post('/postPixabay', (req, res) => {
+app.post('/postData', (req, res) => {
     pixabayImage = {
       Image: req.body.image,
     };

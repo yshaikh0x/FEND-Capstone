@@ -21,23 +21,20 @@ module.exports = {
     module: {
         rules: [
             {
-                test: '/\.js$/',
-                exclude: /node_modules/,
-                loader: "babel-loader"
+              test: "/.js$/",
+              exclude: /node_modules/,
+              loader: "babel-loader",
             },
-            
             {
-                test: /\.scss$/,
-                use: [ 'style-loader', 'css-loader', 'sass-loader']
-           }
-        ]
-    },
-        test: /\.(png|jpe?g|gif)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-          },
+              test: /\.scss$/,
+              use: ["style-loader", "css-loader", "sass-loader"],
+            },
+            {
+              test: /\.(png|jpe?g|gif)$/i,
+              use: [{ loader: "file-loader" }],
+            },
         ],
+    },
     plugins: [
         new HtmlWebPackPlugin({
             template: "./src/client/views/index.html",

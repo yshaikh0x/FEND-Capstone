@@ -5,6 +5,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
     entry: './src/client/index.js',
     devtool: 'source-map',
+    devServer: {
+        proxy: {
+          '/getAll': 'http://localhost:8080',
+        },
+      },
     module: {
         rules: [
             {
@@ -17,6 +22,14 @@ module.exports = {
                 use: [ 'style-loader', 'css-loader', 'sass-loader']
         }
         ],
+
+            test: /\.(png|jpe?g|gif)$/i,
+            use: [
+              {
+                loader: 'file-loader',
+              },
+            ],
+         
     plugins: [
         new HtmlWebpackPlugin({
             template: "./src/client/views/index.html",
