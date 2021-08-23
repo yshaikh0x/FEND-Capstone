@@ -71,7 +71,7 @@ app.post('/postData', (req, res) => {
         Latitude: req.body.lat,
         Longitude: req.body.lng
     };
-    projectData.push(geoData);
+    projectData = geoData;
    console.log(geoData);
    res.send(projectData);
 });
@@ -83,7 +83,7 @@ app.post('/postData', (req, res) => {
       Temperature: req.body.temp,
       Description: req.body.description
     };
-    projectData.push(weatherbitData);
+    projectData = weatherbitData;
     console.log(weatherbitData)
     res.send(projectData);
   });
@@ -93,6 +93,6 @@ app.post('/postData', (req, res) => {
     pixabayImage = {
       Image: req.body.image,
     };
-    projectData.push(pixabayImage);
+    projectData = pixabayImage;
     res.send(projectData);
   });

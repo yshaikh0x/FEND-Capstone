@@ -16,7 +16,7 @@ const weatherbitApi = 'd50c5f4915224a418089dd6bd26bf43b'
 const weatherbitBase = `https://api.weatherbit.io/v2.0/current?`
 
 //Pixabay API 
-const pixabayApi = process.env.PIXABAY_KEY
+const pixabayApi = `22391342-c4af7b5f68dd6481aa4bc801e`
 const pixabayBase = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${destinationCity}`;
 
 
@@ -35,15 +35,18 @@ async function generateData(e) {
     .then(async (geoData) => {
          const res = await 
         postData("/postData", 
-        {"longitude": geoData.lng, 
+        {
+        "longitude": geoData.lng, 
         "latitude": geoData.lat ,
         "city": destinationCity,
     })
-    getWeatherbit()
-      .then((weatherInfo) => {
-        postData("/postData", {
-            "temperature": weatherInfo.temp,
-            "description" : weatherInfo.description
+    getWeatherbit(geoData.lat, geoData.lng)
+      .then(async (weatherbitData) => {
+        const res = await 
+        postData("/postData", 
+        {
+          "temperature": weatherbitData.temp,
+          "description" : weatherbitData.description
         })
       })
         .then(() => {
@@ -77,8 +80,8 @@ const getGeonames = async(destinationCity) => {
           console.log(geoData)
           console.log("Longitude: " + geoData.geonames[0].lng)
           console.log("Latitude: "+ geoData.geonames[0].lat)
-          let lat = geoData.geonames[0].lat
-          let lng = geoData.geonames[0].lng
+          const lat = geoData.geonames[0].lat
+          const lng = geoData.geonames[0].lng
           return {
             lat,
             lng
@@ -87,17 +90,18 @@ const getGeonames = async(destinationCity) => {
           console.log("GEO ERROR", error);
       } 
  }
+
 /* Function to GET Weatherbit API Data*/
 
 const getWeatherbit= async (lat,lng) => {
   const res = await fetch(
     `https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lng}&key=${weatherbitApi}`)
       try{
-          const weatherInfo = await res.json();
-          console.log(weatherInfo)
-          console.log("Temp: " + weatherInfo.weatherbit[0].temp)
-          console.log("Description: " + weatherInfo.weatherbit[0].description)
-          return {
+          const weatherbitData = await res.json();
+          console.log(weatherbitData)
+          console.log("Temp: " + weatherbitData.data[0].temp)
+          console.log("Description: " + weatherbitData.data[0].weather.description)
+            return {
             temp, 
             description
           };
@@ -108,18 +112,19 @@ const getWeatherbit= async (lat,lng) => {
 
  /* Function to GET Pixabay API Data*/
 const getPixabay = async(destinationCity) => {
-  const res = await fetch(`https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${destinationCity}`)
+  const res = await fetch(`https://pixabay.com/api/?key=${pixabayApi}&q=${destinationCity}`)
       try{
-          const data = await res.json();
-          console.log(data)
-          return data;
+          const pixaData = await res.json();
+          console.log(pixaData)
+          console.log()
+          return pixaData;
       } catch (error) {
           console.log("PIXA ERROR", error);
       } 
  }
 
 /* Function to POST data to app */
-const postData = async ( url='', data = {}) => {
+const postData = async ( url='http://localhost:8080/all', data = {}) => {
     const res = await fetch( url, {
         method: 'POST',
         credentials: "same-origin",
@@ -140,14 +145,14 @@ try {
 
  /* Function to GET Data */
 const updateUI = async ()=> {
-  const req = await fetch ('/all');
+  const req = await fetch ('http://localhost:8080/all');
   try{
       const projectData = await req.json()
       console.log(projectData);
-      document.getElementById('city').innerHTML=`City: ${projectData.geoData.City}`;
-      document.getElementById('temp').innerHTML=`Temperature: ${data.projectData[0].temperature}`;
-      document.getElementById('description').innerHTML=`Description: ${data.projectData[0].description}`;
-      document.getElementById('countdown').innerHTML=`"Countdown:" ${getCountdown.days}`;
+      document.getElementById('city').innerHTML=`City: ${geoData.City}`;
+      document.getElementById('temp').innerHTML=`Temperature: ${weatherbitData.temp}`;
+      document.getElementById('description').innerHTML=`Description: ${projectData[0].Description}`;
+      document.getElementById('countdown').innerHTML=`"Countdown:" ${days}`;
 
       
   }catch(error) {

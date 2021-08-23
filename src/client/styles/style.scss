@@ -1,28 +1,47 @@
 body{
-    background: #fffff8;
+    background: #e6ecec;
+    margin-top: 50px;
+    margin-bottom: 50px;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 #app{
     display:grid;
     grid-auto-rows: minmax(50px, auto); 
-   grid-template-columns: minmax(150px, auto);
+    grid-template-columns: minmax(150px, auto);
     height: 80vh;
-    background: #ffffff;
+   background: #73ebbd77;
+   //background-image: url('');
+    background-repeat: no-repeat;
+    background-position: center ;
+    background-size: cover;
+    border-radius: 15px;
+    position: relative;  
+	height: auto;
     color: #1f5734;
-    justify-content:center ;
+    // justify-content: center ;
     grid-gap: 10px;
     font-size: 70px;
     font-family: 'Oswald', sans-serif;
 }
 
 .headline{
-    border: 5px red solid;
-    padding: px;
+    padding: 5px;
+    letter-spacing:20px;
 }
 
 .entry{
     background: #1f57349c;
+}
+
+.dataContent{
+    display:block;
+    height: 50px;
+    max-width:500px;
+    font-size: 27px;
+    background:#a5acac9f;
+    justify-content: center;
+    //border-radius: 10px;
 }
 
 #date{
@@ -44,44 +63,54 @@ body{
 /*  Basic Styling To Override Default For Basic HTML Elements */
 label{
     display:block;
+    height: 50px;
+    width: 200px;
     font-size: 27px;
+    background:#a5acac9f;;
+    //border-radius: 10px;
+    align-content: left;
 }
 
 input{
     display:block;
     height: 50px;
     width: 200px;
-    background:#264b3e;
-    color: #f0d43a;
-    font-size: 20px;
+    background:#a5acac9f;
+    color: #1f5734;
+    font-size: 23px;
     font-family: 'Oswald', sans-serif;
     border: none;
+    //border-radius: 10px;
+    align-content: left;
 }
 
 button{
     width: 200px;
     height: 90px;
-    background: #1f5734;
-    color: #f0d43a;
+    background: #a5acacbf;
+    color: #1f5734;
     font-size: 20px;
     font-family: 'Oswald', sans-serif;
     margin-top: 30px;;
     border: none;
     box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.24);
+    border-radius: 10px;
 }
 button:hover{
     background: #1f5734;
     color: #d6be36;
     border: solid #d6be36; 
+    border-radius: 10px;
 }
 button:active{
     background: #1f5734;
     color: #d6be36;
     box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.24);
     transform: translateY(4px);
+    border-radius: 10px;
 }
 h1{
-    font-size: 36px;
+    font-size: 30px;
 }
 
 textarea{
@@ -101,7 +130,7 @@ button:focus {
 }
 /* Style for Placeholder Text*/
 ::placeholder { /* Firefox, Chrome, Opera */ 
-    color: #f0d43a; 
+    color: #1f5734; 
     font-family: 'Oswald', sans-serif;
 
 } 
