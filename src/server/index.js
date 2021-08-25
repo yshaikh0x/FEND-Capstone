@@ -64,35 +64,64 @@ function sendData (req, res){
     res.send(projectData);
 };
 
-//POST Geonames Route
-app.post('/postData', (req, res) => {
-    geoData = {
+// //POST Geonames Route
+// app.post('/postData', (req, res) => {
+//     geoData = {
+//         City: req.body.city,
+//         Latitude: req.body.lat,
+//         Longitude: req.body.lng
+//     };
+//     projectData = geoData;
+//    console.log(geoData);
+//    res.send(projectData);
+// });
+
+
+// //POST Weatherbit Route
+// app.post('/postData', (req, res) => {
+//     weatherbitData = {
+//       Temperature: req.body.temp,
+//       Description: req.body.description
+//     };
+//     projectData = weatherbitData;
+//     console.log(weatherbitData)
+//     res.send(projectData);
+//   });
+
+//   //POST Pixabay Route
+// app.post('/postData', (req, res) => {
+//     pixabayImage = {
+//       Image: req.body.image,
+//     };
+//     projectData = pixabayImage;
+//     res.send(projectData);
+//   });
+
+  app.post("/postData", (req, res) => {
+    //POST Geonames Route
+    if (req.body.city) {
+      let geoData = {
         City: req.body.city,
-        Latitude: req.body.lat,
-        Longitude: req.body.lng
-    };
-    projectData = geoData;
-   console.log(geoData);
-   res.send(projectData);
-});
-
-
-//POST Weatherbit Route
-app.post('/postData', (req, res) => {
-    weatherbitData = {
-      Temperature: req.body.temp,
-      Description: req.body.description
-    };
-    projectData = weatherbitData;
-    console.log(weatherbitData)
-    res.send(projectData);
-  });
-
-  //POST Pixabay Route
-app.post('/postData', (req, res) => {
-    pixabayImage = {
-      Image: req.body.image,
-    };
-    projectData = pixabayImage;
+        Latitude: req.body.latitude,
+        Longitude: req.body.longitude,
+      };
+      projectData.geoData = geoData;
+      console.log("geoData ", geoData);
+    } //POST Weatherbit Route
+    else if (req.body.temperature) {
+      let weatherbitData = {
+        Temperature: req.body.temperature,
+        Description: req.body.description,
+      };
+      projectData.weatherbitData = weatherbitData;
+      console.log("weatherbitData ", weatherbitData);
+    } //POST Pixabay Route
+    else if (req.body.image) {
+      let pixabayImage = {
+        Image: req.body.image,
+      };
+      projectData.pixabayImage = pixabayImage;
+      console.log("pixabayImage ", pixabayImage);
+    }
     res.send(projectData);
   });
