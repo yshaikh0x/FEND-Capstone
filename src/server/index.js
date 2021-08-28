@@ -8,7 +8,7 @@ var path = require('path')
 const cors = require('cors') //cors for cross origin allowance
 const express = require('express')
 const fetch = require("node-fetch")
-const mockAPIResponse = require('./mockAPI.js');
+//const mockAPIResponse = require('./mockAPI.js');
 const { url } = require('inspector');
 const { application } = require('express');
 // Start up an instance of app
@@ -24,9 +24,6 @@ app.use(bodyParser.json())
 // Geonames API
 const geonamesApi = process.env.GEONAMES_USERNAME
 const geonamesBase = 'http://api.geonames.org/searchJSON?q=';
-
-const lat = data.geonames[0].lat;
-const lng = data.geonames[0].lng;
 
 //Weatherbit API
 const weatherbitApi = process.env.WEATHERBIT_API_KEY

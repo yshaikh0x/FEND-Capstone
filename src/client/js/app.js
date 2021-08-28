@@ -4,6 +4,7 @@ const date = document.getElementById('date');
 const destinationCity = document.getElementById('destinationCity').value
 const departure = document.getElementById('departureDate');
 const departureVal = document.getElementById('departureDate').value;
+const returnVal = document.getElementById('returnDate').value;
 const temperature = document.getElementById('temp');
 const description = document.getElementById('description');
   
@@ -27,7 +28,10 @@ document.getElementById("generate").addEventListener('click', generateData);
 /* Function called by event listener */
 async function generateData(e) {
     e.preventDefault();
+    const destinationCity = document.getElementById('destinationCity').value;
+    const departureVal = document.getElementById('departureDate').value;
     const countdown = getCountdown(departureVal);
+    const tripLength= getLengthOfTrip(returnVal, departureVal)
     console.log(destinationCity)
     console.log (departureVal)
 
@@ -36,9 +40,9 @@ async function generateData(e) {
          const res = await 
         postData("/postData", 
         {
-        "longitude": geoData.lng, 
-        "latitude": geoData.lat ,
-        "city": destinationCity,
+        "Longitude": geoData.lng, 
+        "Latitude": geoData.lat ,
+        "City": destinationCity
     })
     getWeatherbit(geoData.lat, geoData.lng)
       .then(async (weatherbitData) => {
@@ -47,6 +51,14 @@ async function generateData(e) {
         {
           "temperature": weatherbitData.temp,
           "description" : weatherbitData.description
+        })
+      })
+      getPixabay(destinationCity)
+      .then(async (pixaData)=>{
+        const res = await
+        postData("/postData",
+        {
+          "Image": pixaData.hits
         })
       })
         .then(() => {
@@ -71,6 +83,18 @@ const depDate = new Date(departureVal);
   //writing out the countdown
   console.log("You are leaving in " + days + " days! ")
 }
+
+///***TRIP LENGTH FUNCTION****////
+const getLengthOfTrip = async(returnVal, departureVal) => {
+  //Set the date we're counting down to
+  const depDate = new Date(departureVal);
+  const retDate = new Date(returnVal);
+    //calculate difference between 2 dates
+    const tripLength = retDate - depDate;
+    let daysLength = Math.ceil(tripLength / (1000 * 60 * 60 * 24));
+    //writing out the countdown
+    console.log( "The length of your trip is " + daysLength + " days!")
+  }
 
 /* Function to GET Geonames API Data*/
 const getGeonames = async(destinationCity) => {
@@ -102,8 +126,8 @@ const getWeatherbit= async (lat,lng) => {
           console.log("Temp: " + weatherbitData.data[0].temp)
           console.log("Description: " + weatherbitData.data[0].weather.description)
             return {
-            temp, 
-            description
+            temp:  weatherbitData.data[0].temp, 
+            description : weatherbitData.data[0].weather.description
           };
       } catch (error) {
           console.log("WEATHERBIT ERROR", error);
@@ -116,7 +140,7 @@ const getPixabay = async(destinationCity) => {
       try{
           const pixaData = await res.json();
           console.log(pixaData)
-          console.log()
+          console.log(pixaData.hits[0])
           return pixaData;
       } catch (error) {
           console.log("PIXA ERROR", error);
@@ -124,8 +148,8 @@ const getPixabay = async(destinationCity) => {
  }
 
 /* Function to POST data to app */
-const postData = async ( url='http://localhost:8080/all', data = {}) => {
-    const res = await fetch( url, {
+const postData = async ( url='http://localhost:8080/postData', data = {}) => {
+    const res = await fetch( 'http://localhost:8080/postData', {
         method: 'POST',
         credentials: "same-origin",
         mode: 'cors',
@@ -149,10 +173,12 @@ const updateUI = async ()=> {
   try{
       const projectData = await req.json()
       console.log(projectData);
-      document.getElementById('city').innerHTML=`City: ${geoData.City}`;
-      document.getElementById('temp').innerHTML=`Temperature: ${weatherbitData.temp}`;
-      document.getElementById('description').innerHTML=`Description: ${projectData[0].Description}`;
-      document.getElementById('countdown').innerHTML=`"Countdown:" ${days}`;
+      document.getElementById('city').innerHTML=`City: ${projectData.geoData.City}`;
+      document.getElementById('temp').innerHTML=`Temperature: ${projectData.weatherebitData.Temperature}`;
+      document.getElementById('description').innerHTML=`Description: ${projectData.weatherbitData.Description}`;
+      document.getElementById('countdown').innerHTML=`"Countdown:" ${getCountdown.days}`;
+      document.getElementById('tripLength').innerHTML=`"Countdown:" ${getLengthOfTrip.daysLength}`;
+      document.getElementById('fromPixabay').src = `${projectData.pixaData.Image}`;
 
       
   }catch(error) {

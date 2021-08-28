@@ -1,25 +1,25 @@
 body{
     background: #e6ecec;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin: 100px;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 #app{
     display:grid;
     grid-auto-rows: minmax(50px, auto); 
-    grid-template-columns: minmax(150px, auto);
-    height: 80vh;
-   background: #73ebbd77;
-   //background-image: url('');
+    grid-template-columns: minmax(3, 2fr);
+    height: 70vh;
+    background: #73ebbd77;
+    //background-image: url('../media/balloons.jpg');
     background-repeat: no-repeat;
     background-position: center ;
     background-size: cover;
     border-radius: 15px;
     position: relative;  
 	height: auto;
+    width: auto;
     color: #1f5734;
-    // justify-content: center ;
+    justify-content: center ;
     grid-gap: 10px;
     font-size: 70px;
     font-family: 'Oswald', sans-serif;
@@ -27,7 +27,9 @@ body{
 
 .headline{
     padding: 5px;
-    letter-spacing:20px;
+    letter-spacing: 25px;
+    justify-self: center;
+    text-align: center;
 }
 
 .entry{
@@ -35,44 +37,39 @@ body{
 }
 
 .dataContent{
-    display:block;
+    //display:grid;
     height: 50px;
     max-width:500px;
     font-size: 27px;
     background:#a5acac9f;
-    justify-content: center;
+    //justify-content: center;
     //border-radius: 10px;
+    grid-column: 3;
+    
 }
-
-#date{
-
+.holder{
+    grid-column: 1;
 }
-
-#temp{
-
-}
-
-#content{
-
-}
-
-.title{
-
+#fromPixabay {
+    border: black 1px solid;
+    max-width: 500px;
+    max-height: 500px;
+    grid-area:  2;
 }
 
 /*  Basic Styling To Override Default For Basic HTML Elements */
 label{
-    display:block;
+    display:grid;
     height: 50px;
-    width: 200px;
+    width: 250px;
     font-size: 27px;
-    background:#a5acac9f;;
+    //background:#a5acac9f;     ;
     //border-radius: 10px;
     align-content: left;
 }
 
 input{
-    display:block;
+    display:grid;
     height: 50px;
     width: 200px;
     background:#a5acac9f;
@@ -81,7 +78,8 @@ input{
     font-family: 'Oswald', sans-serif;
     border: none;
     //border-radius: 10px;
-    align-content: left;
+    //align-content: left;
+    grid-column: 1/2;
 }
 
 button{

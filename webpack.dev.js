@@ -8,11 +8,11 @@ module.exports = {
     entry: './src/client/index.js',
     mode: 'development',
     devtool: 'source-map',
-    devServer: {
-        proxy: {
-          '/postData': 'http://localhost:8080',
-        },
-      },
+    // devServer: {
+    //     proxy: {
+    //       '/postData': 'http://localhost:8080',
+    //     },
+    //   },
     stats: 'verbose',
     output: {
         libraryTarget: 'var',

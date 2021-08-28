@@ -10,22 +10,27 @@
   <div class ="headline">
     TRAVEL PLANNER
   </div>
-  <div class ="holderDest">
+  <div class ="holder">
     <label for="destination">Destination City:</label>
     <input type="text" id="destinationCity" placeholder="Enter Destination">
   </div>
-  <div class ="holderDep">
+  <div class ="holder">
     <label for="departure">Departure Date:</label>
     <input type="date" id="departureDate" placeholder="">
+    <label for="return">Return Date:</label>
+    <input type="date" id="returnDate" placeholder="">
     <button id="generate" type = "submit" onclick="return " onsubmit="return "> Generate Flight Information </button>
+  </div>
+  <div class="sidebar" >
+    <img src="" alt ="image" id="fromPixabay">
   </div>
   <div class ="dataContent">
     <div class = "title">Results: </div>
     <div class ="dataContent" id = "city">city</div> 
-   <div class ="dataContent" id = "temp">temp is </div>
+   <div class ="dataContent" id = "temp">temp </div>
    <div class ="dataContent" id = "description">description</div>
    <div class ="dataContent" id = "countdown"> Countdown </div>
-  </div>
+   <div class ="dataContent" id = "tripLength"> Length of trip </div>
   </div>
   </div>
 <script ></script>
