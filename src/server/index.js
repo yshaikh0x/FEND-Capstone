@@ -27,9 +27,9 @@ const geonamesBase = 'http://api.geonames.org/searchJSON?q=';
 
 //Weatherbit API
 const weatherbitApi = process.env.WEATHERBIT_API_KEY
-const weatherbitBase = 'http://api.weatherbit.io/v2.0/'
-const weatherbitCurrent = 'current?'
-const weatherbitFuture = 'forecast/daily?'
+const weatherbitBase = `http://api.weatherbit.io/v2.0/forecast/daily?`
+// const weatherbitCurrent = 'current?'
+// const weatherbitFuture = 'forecast/daily?'
 
 //Pixabay API 
 const pixabayApi = process.env.PIXABAY_KEY

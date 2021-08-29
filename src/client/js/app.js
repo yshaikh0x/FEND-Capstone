@@ -14,7 +14,7 @@ const geonamesBase = `http://api.geonames.org/searchJSON?q=${destinationCity}&ma
 
 //Weatherbit API
 const weatherbitApi = 'd50c5f4915224a418089dd6bd26bf43b'
-const weatherbitBase = `https://api.weatherbit.io/v2.0/current?`
+const weatherbitBase = `http://api.weatherbit.io/v2.0/forecast/daily?`
 
 //Pixabay API 
 const pixabayApi = `22391342-c4af7b5f68dd6481aa4bc801e`
@@ -40,8 +40,8 @@ async function generateData(e) {
          const res = await 
         postData("/postData", 
         {
-        "Longitude": geoData.lng, 
-        "Latitude": geoData.lat ,
+        "Latitude": geoData.latitude,
+        "Longitude": geoData.longitude,
         "City": destinationCity
     })
     getWeatherbit(geoData.lat, geoData.lng)
@@ -49,16 +49,16 @@ async function generateData(e) {
         const res = await 
         postData("/postData", 
         {
-          "temperature": weatherbitData.temp,
-          "description" : weatherbitData.description
+          "Temperature": weatherbitData.temperature,
+          "Description" : weatherbitData.description
         })
       })
       getPixabay(destinationCity)
-      .then(async (pixaData)=>{
+      .then(async (pixabayImage)=>{
         const res = await
         postData("/postData",
         {
-          "Image": pixaData.hits
+          "Image": pixabayImage.image
         })
       })
         .then(() => {
@@ -119,7 +119,8 @@ const getGeonames = async(destinationCity) => {
 
 const getWeatherbit= async (lat,lng) => {
   const res = await fetch(
-    `https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lng}&key=${weatherbitApi}`)
+    `http://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lng}&key=${weatherbitApi}`)
+    
       try{
           const weatherbitData = await res.json();
           console.log(weatherbitData)
@@ -173,12 +174,12 @@ const updateUI = async ()=> {
   try{
       const projectData = await req.json()
       console.log(projectData);
-      document.getElementById('city').innerHTML=`City: ${projectData.geoData.City}`;
-      document.getElementById('temp').innerHTML=`Temperature: ${projectData.weatherebitData.Temperature}`;
-      document.getElementById('description').innerHTML=`Description: ${projectData.weatherbitData.Description}`;
-      document.getElementById('countdown').innerHTML=`"Countdown:" ${getCountdown.days}`;
-      document.getElementById('tripLength').innerHTML=`"Countdown:" ${getLengthOfTrip.daysLength}`;
-      document.getElementById('fromPixabay').src = `${projectData.pixaData.Image}`;
+      document.getElementById('city').innerHTML=`City: ${destinationCity}`;
+      document.getElementById('temp').innerHTML=`Temperature: ${projectData.Temperature}`;
+      document.getElementById('description').innerHTML=`Description: ${projectData.Description}`;
+      document.getElementById('countdown').innerHTML=`Countdown: ${getCountdown.days}`;
+      document.getElementById('tripLength').innerHTML=`Trip Length: ${getLengthOfTrip.daysLength}`;
+      document.getElementById('fromPixabay').src = `${projectData.Image}`;
 
       
   }catch(error) {
