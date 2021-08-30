@@ -31,7 +31,7 @@ async function generateData(e) {
     const destinationCity = document.getElementById('destinationCity').value;
     const departureVal = document.getElementById('departureDate').value;
     const countdown = getCountdown(departureVal);
-    const tripLength= getLengthOfTrip(returnVal, departureVal)
+    const tripLength = getLengthOfTrip(returnVal, departureVal)
     console.log(destinationCity)
     console.log (departureVal)
 
@@ -40,17 +40,17 @@ async function generateData(e) {
          const res = await 
         postData("/postData", 
         {
-        "Latitude": geoData.latitude,
-        "Longitude": geoData.longitude,
-        "City": destinationCity
+         "city": destinationCity,
+        "latitude": geoData.lat,
+        "longitude": geoData.lng,
     })
     getWeatherbit(geoData.lat, geoData.lng)
       .then(async (weatherbitData) => {
         const res = await 
         postData("/postData", 
         {
-          "Temperature": weatherbitData.temperature,
-          "Description" : weatherbitData.description
+          "temperature": weatherbitData.temp,
+          "description" : weatherbitData.description
         })
       })
       getPixabay(destinationCity)
@@ -58,7 +58,7 @@ async function generateData(e) {
         const res = await
         postData("/postData",
         {
-          "Image": pixabayImage.image
+          "image": pixabayImage.hits[0].largeImageURL
         })
       })
         .then(() => {
@@ -77,9 +77,9 @@ const depDate = new Date(departureVal);
   //calculate difference between 2 dates
   const distance = depDate - todaysDate
   let days = Math.ceil(distance / (1000 * 60 * 60 * 24));
-  let hours = Math.ceil((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  let minutes = Math.ceil((distance % (1000 * 60 * 60)) / (1000 * 60));
-  let seconds = Math.ceil((distance % (1000 * 60)) / 1000);
+  // let hours = Math.ceil((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  // let minutes = Math.ceil((distance % (1000 * 60 * 60)) / (1000 * 60));
+  // let seconds = Math.ceil((distance % (1000 * 60)) / 1000);
   //writing out the countdown
   console.log("You are leaving in " + days + " days! ")
 }
@@ -139,10 +139,10 @@ const getWeatherbit= async (lat,lng) => {
 const getPixabay = async(destinationCity) => {
   const res = await fetch(`https://pixabay.com/api/?key=${pixabayApi}&q=${destinationCity}`)
       try{
-          const pixaData = await res.json();
-          console.log(pixaData)
-          console.log(pixaData.hits[0])
-          return pixaData;
+          const pixabayImage = await res.json();
+          console.log(pixabayImage)
+          console.log(pixabayImage.hits[0].largeImageURL)
+          return pixabayImage;
       } catch (error) {
           console.log("PIXA ERROR", error);
       } 
@@ -175,11 +175,12 @@ const updateUI = async ()=> {
       const projectData = await req.json()
       console.log(projectData);
       document.getElementById('city').innerHTML=`City: ${destinationCity}`;
-      document.getElementById('temp').innerHTML=`Temperature: ${projectData.Temperature}`;
-      document.getElementById('description').innerHTML=`Description: ${projectData.Description}`;
-      document.getElementById('countdown').innerHTML=`Countdown: ${getCountdown.days}`;
-      document.getElementById('tripLength').innerHTML=`Trip Length: ${getLengthOfTrip.daysLength}`;
-      document.getElementById('fromPixabay').src = `${projectData.Image}`;
+      document.getElementById('temp').innerHTML=`Temperature: ${projectData.weatherbitData.Temperature}`;
+      document.getElementById('description').innerHTML=`Description: ${projectData.weatherbitData.Description}`;
+      document.getElementById('countdown').innerHTML=`Countdown: ${days}`;
+      document.getElementById('tripLength').innerHTML=`Trip Length: ${tripLength}`;
+      // document.getElementById('fromPixabay').src = `${projectData.Image}`;
+      document.getElementById("fromPixabay").innerHTML = `<img src="${projectData.pixabayImage.Image}" />`;
 
       
   }catch(error) {
