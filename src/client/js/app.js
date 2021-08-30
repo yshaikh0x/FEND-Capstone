@@ -58,9 +58,15 @@ async function generateData(e) {
         const res = await
         postData("/postData",
         {
-          "image": pixabayImage.hits[0].largeImageURL
+          "image": pixabayImage.hits[0].webformatURL
         })
       })
+      .then(() => {
+        getCountdown(departureVal);
+    })
+      .then(() => {
+        getLengthOfTrip(returnVal, departureVal);
+    })
         .then(() => {
             updateUI();
         })
@@ -141,7 +147,7 @@ const getPixabay = async(destinationCity) => {
       try{
           const pixabayImage = await res.json();
           console.log(pixabayImage)
-          console.log(pixabayImage.hits[0].largeImageURL)
+          console.log(pixabayImage.hits[0].webformatURL)
           return pixabayImage;
       } catch (error) {
           console.log("PIXA ERROR", error);
@@ -177,8 +183,8 @@ const updateUI = async ()=> {
       document.getElementById('city').innerHTML=`City: ${destinationCity}`;
       document.getElementById('temp').innerHTML=`Temperature: ${projectData.weatherbitData.Temperature}`;
       document.getElementById('description').innerHTML=`Description: ${projectData.weatherbitData.Description}`;
-      document.getElementById('countdown').innerHTML=`Countdown: ${days}`;
-      document.getElementById('tripLength').innerHTML=`Trip Length: ${tripLength}`;
+      document.getElementById('countdown').innerHTML=`Countdown: ${getCountdown(departureVal).days}`;
+      document.getElementById('tripLength').innerHTML=`Trip Length: ${getLengthOfTrip().tripLength}`;
       // document.getElementById('fromPixabay').src = `${projectData.Image}`;
       document.getElementById("fromPixabay").innerHTML = `<img src="${projectData.pixabayImage.Image}" />`;
 
