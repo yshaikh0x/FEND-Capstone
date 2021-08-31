@@ -30,7 +30,7 @@ async function generateData(e) {
     e.preventDefault();
     const destinationCity = document.getElementById('destinationCity').value;
     const departureVal = document.getElementById('departureDate').value;
-    const countdown = getCountdown(departureVal);
+    const countDays = getCountdown(departureVal);
     const tripLength = getLengthOfTrip(returnVal, departureVal)
     console.log(destinationCity)
     console.log (departureVal)
@@ -61,12 +61,6 @@ async function generateData(e) {
           "image": pixabayImage.hits[0].webformatURL
         })
       })
-      .then(() => {
-        getCountdown(departureVal);
-    })
-      .then(() => {
-        getLengthOfTrip(returnVal, departureVal);
-    })
         .then(() => {
             updateUI();
         })
@@ -87,9 +81,11 @@ const depDate = new Date(departureVal);
   // let minutes = Math.ceil((distance % (1000 * 60 * 60)) / (1000 * 60));
   // let seconds = Math.ceil((distance % (1000 * 60)) / 1000);
   //writing out the countdown
-  console.log("You are leaving in " + days + " days! ")
+  console.log("You are leaving in " + days + " days!")
+  document.getElementById('countdown').innerHTML=`Countdown: ${days} days`;
 }
 
+console.log (getCountdown.days)
 ///***TRIP LENGTH FUNCTION****////
 const getLengthOfTrip = async(returnVal, departureVal) => {
   //Set the date we're counting down to
@@ -100,6 +96,7 @@ const getLengthOfTrip = async(returnVal, departureVal) => {
     let daysLength = Math.ceil(tripLength / (1000 * 60 * 60 * 24));
     //writing out the countdown
     console.log( "The length of your trip is " + daysLength + " days!")
+    document.getElementById('tripLength').innerHTML=`Trip Length: ${daysLength} days`;
   }
 
 /* Function to GET Geonames API Data*/
@@ -183,9 +180,8 @@ const updateUI = async ()=> {
       document.getElementById('city').innerHTML=`City: ${destinationCity}`;
       document.getElementById('temp').innerHTML=`Temperature: ${projectData.weatherbitData.Temperature}`;
       document.getElementById('description').innerHTML=`Description: ${projectData.weatherbitData.Description}`;
-      document.getElementById('countdown').innerHTML=`Countdown: ${getCountdown(departureVal).days}`;
-      document.getElementById('tripLength').innerHTML=`Trip Length: ${getLengthOfTrip().tripLength}`;
-      // document.getElementById('fromPixabay').src = `${projectData.Image}`;
+      // document.getElementById('countdown').innerHTML=`Countdown: ${}`;
+      // document.getElementById('tripLength').innerHTML=`Trip Length: ${}`;
       document.getElementById("fromPixabay").innerHTML = `<img src="${projectData.pixabayImage.Image}" />`;
 
       
