@@ -7,7 +7,7 @@ module.exports = {
     devtool: 'source-map',
     devServer: {
         proxy: {
-          '/all': 'http://localhost:8080',
+          '/all': 'http://localhost:8081',
         },
       },
     module: {

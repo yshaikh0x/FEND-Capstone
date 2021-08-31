@@ -27,9 +27,9 @@ const geonamesBase = 'http://api.geonames.org/searchJSON?q=';
 
 //Weatherbit API
 const weatherbitApi = process.env.WEATHERBIT_API_KEY
-const weatherbitBase = `http://api.weatherbit.io/v2.0/forecast/daily?`
-// const weatherbitCurrent = 'current?'
-// const weatherbitFuture = 'forecast/daily?'
+const weatherbitBase = 'http://api.weatherbit.io/v2.0/'
+const weatherbitCurrent = 'current?'
+const weatherbitFuture = 'forecast/daily?'
 
 //Pixabay API 
 const pixabayApi = process.env.PIXABAY_KEY
@@ -41,13 +41,12 @@ app.use(express.static('dist'));
 console.log(__dirname)
 
 //Port app will listen to
-const port = 8080;
+const port = 8080
 const server = app.listen(port, listening);
 function listening() {
     console.log("server running");
     console.log(`running on localhost: ${port}`);
 }
-
 
 // Storing data in object
 let projectData = {};
@@ -60,40 +59,6 @@ function sendData (req, res){
     console.log(projectData);
     res.send(projectData);
 };
-
-// //POST Geonames Route
-// app.post('/postData', (req, res) => {
-//     geoData = {
-//         City: req.body.city,
-//         Latitude: req.body.lat,
-//         Longitude: req.body.lng
-//     };
-//     projectData = geoData;
-//    console.log(geoData);
-//    res.send(projectData);
-// });
-
-
-// //POST Weatherbit Route
-// app.post('/postData', (req, res) => {
-//     weatherbitData = {
-//       Temperature: req.body.temp,
-//       Description: req.body.description
-//     };
-//     projectData = weatherbitData;
-//     console.log(weatherbitData)
-//     res.send(projectData);
-//   });
-
-//   //POST Pixabay Route
-// app.post('/postData', (req, res) => {
-//     pixabayImage = {
-//       Image: req.body.image,
-//     };
-//     projectData = pixabayImage;
-//     res.send(projectData);
-//   });
-
   app.post("/postData", (req, res) => {
     //POST Geonames Route
     if (req.body.city) {
@@ -122,3 +87,11 @@ function sendData (req, res){
     }
     res.send(projectData);
   });
+
+
+  //jest testing function
+const portCheck = num => {
+  return num === port;
+};
+//exporting function
+module.export = portCheck;

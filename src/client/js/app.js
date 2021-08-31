@@ -85,7 +85,6 @@ const depDate = new Date(departureVal);
   document.getElementById('countdown').innerHTML=`Countdown: ${days} days`;
 }
 
-console.log (getCountdown.days)
 ///***TRIP LENGTH FUNCTION****////
 const getLengthOfTrip = async(returnVal, departureVal) => {
   //Set the date we're counting down to
@@ -180,8 +179,6 @@ const updateUI = async ()=> {
       document.getElementById('city').innerHTML=`City: ${destinationCity}`;
       document.getElementById('temp').innerHTML=`Temperature: ${projectData.weatherbitData.Temperature}`;
       document.getElementById('description').innerHTML=`Description: ${projectData.weatherbitData.Description}`;
-      // document.getElementById('countdown').innerHTML=`Countdown: ${}`;
-      // document.getElementById('tripLength').innerHTML=`Trip Length: ${}`;
       document.getElementById("fromPixabay").innerHTML = `<img src="${projectData.pixabayImage.Image}" />`;
 
       
@@ -189,3 +186,8 @@ const updateUI = async ()=> {
       console.log("UI Error" , error)
   }
 }
+
+
+module.export = generateData;
+module.export = getCountdown;
+module.export = getLengthOfTrip;

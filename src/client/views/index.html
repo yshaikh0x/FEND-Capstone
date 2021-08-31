@@ -21,19 +21,27 @@
     <input type="date" id="returnDate" placeholder="">
     <button id="generate" type = "submit" onclick="return " onsubmit="return "> Generate Flight Information </button>
   </div>
-  <div class="sidebar" >
-    <img src="" alt ="image" id="fromPixabay">
+  <div class="imgPixa" >
+    <img src="" alt ="." id="fromPixabay">
   </div>
   <div class ="dataContent">
-    <div class = "title">Results: </div>
-    <div class ="dataContent" id = "city">city</div> 
-   <div class ="dataContent" id = "temp">temp </div>
-   <div class ="dataContent" id = "description">description</div>
-   <div class ="dataContent" id = "countdown"> Countdown </div>
-   <div class ="dataContent" id = "tripLength"> Length of trip </div>
+    <label for="results">Results:</label>
+    <label class ="dataContent" id = "city" ></label>
+   <label class ="dataContent" id = "temp"> </label>
+   <label class ="dataContent" id = "description"></label>
+   <label class ="dataContent" id = "countdown">  </label>
+   <label class ="dataContent" id = "tripLength"> </label>
   </div>
   </div>
-<script ></script>
+  <!-- <script>
+    // Check that service workers are supported
+    if ('serviceWorker' in navigator) {
+        // Use the window load event to keep the page load performant
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js');
+        });
+    }
+   </script> -->
 
 </body>
 </html>
