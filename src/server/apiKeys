@@ -1,0 +1,11 @@
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+function apiKeys() {
+    const geonamesApi = process.env.GEONAMES_USERNAME;
+    const weatherbitApi = process.env.WEATHERBIT_API_KEY;
+    const pixabayApi = process.env.PIXABAY_KEY;
+}
+
+module.export = apiKeys;

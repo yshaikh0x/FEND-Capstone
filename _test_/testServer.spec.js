@@ -1,11 +1,7 @@
-const portCheck = require("../src/server/index.js");
+const apiKeys = require("../src/server/apiKeys");
 
 
 //test function
-test("Check 8000", () => {
-  expect(portCheck(8000)).toBe(false);
-});
-
-test("Check 8080", () => {
-  expect(portCheck(8080)).toBe(true);
+test("Check geonames api key is included", () => {
+  expect(apiKeys('geonamesApi')).not.toBe('');
 });
