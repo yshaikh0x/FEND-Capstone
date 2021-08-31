@@ -16,14 +16,14 @@ body{
     font-family: 'Oswald', sans-serif;
 }
 
-.holder{
+/* .holder{
 
-}
+} */
 
 .entry{
     background: rgba(59, 74, 107, .4);
 }
-
+/* 
 #entryHolder{
     
 }
@@ -45,7 +45,7 @@ body{
 }
 .title{
 
-}
+} */
 
 /*  Basic Styling To Override Default For Basic HTML Elements */
 label{
@@ -122,3 +122,10 @@ button:focus {
     font-family: 'Oswald', sans-serif;
 
 } 
+
+
+@media(min-width:360){
+    holder {
+        grid-row: auto;
+    }
+}
