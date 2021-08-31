@@ -87,11 +87,3 @@ function sendData (req, res){
     }
     res.send(projectData);
   });
-
-
-  //jest testing function
-const portCheck = num => {
-  return num === port;
-};
-//exporting function
-module.export = portCheck;
